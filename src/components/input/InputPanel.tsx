@@ -44,6 +44,7 @@ export function InputPanel() {
       {showDemoButton && (
         <div className="mb-3">
           <button
+            data-testid="demo-button"
             onClick={handleLoadDemo}
             className="w-full flex flex-col items-center justify-center gap-1 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-150 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg hover:shadow-indigo-500/25 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-gray-900"
           >

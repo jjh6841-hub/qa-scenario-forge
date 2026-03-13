@@ -86,10 +86,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
-      - name: Run E2E tests
+      - name: Run E2E tests (demo mode – no API key required)
         run: npm run test:e2e
         env:
           CI: true
+          # VITE_ANTHROPIC_API_KEY is intentionally omitted.
+          # All E2E tests use the built-in demo mode and do not call the real API.
 
       - name: Print E2E test summary
         if: always()

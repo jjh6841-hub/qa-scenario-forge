@@ -22,9 +22,10 @@ export function ExportBar() {
   };
 
   return (
-    <div className="mt-4 flex items-center justify-end gap-2">
+    <div data-testid="export-bar" className="mt-4 flex items-center justify-end gap-2">
       <span className="text-gray-500 text-xs mr-2">결과 내보내기:</span>
       <button
+        data-testid="export-json"
         onClick={handleExportJSON}
         className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gradient-to-r from-blue-700 to-blue-600 text-blue-100 hover:from-blue-600 hover:to-blue-500 border border-blue-600/50 hover:border-blue-500 transition-all shadow-sm hover:shadow-blue-500/20 hover:shadow-md"
       >
@@ -39,6 +40,7 @@ export function ExportBar() {
         JSON 다운로드
       </button>
       <button
+        data-testid="export-markdown"
         onClick={handleExportMarkdown}
         className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gradient-to-r from-green-700 to-green-600 text-green-100 hover:from-green-600 hover:to-green-500 border border-green-600/50 hover:border-green-500 transition-all shadow-sm hover:shadow-green-500/20 hover:shadow-md"
       >
