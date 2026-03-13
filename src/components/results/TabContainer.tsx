@@ -22,7 +22,12 @@ const TABS: TabConfig[] = [
 
 function LoadingState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 gap-3">
+    <div
+      role="status"
+      aria-live="polite"
+      aria-label={message}
+      className="flex flex-col items-center justify-center py-16 gap-3"
+    >
       <Spinner size="lg" color="text-blue-500" />
       <p className="text-gray-400 text-sm">{message}</p>
     </div>
@@ -31,9 +36,12 @@ function LoadingState({ message }: { message: string }) {
 
 function ErrorState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 gap-3">
+    <div
+      role="alert"
+      className="flex flex-col items-center justify-center py-16 gap-3"
+    >
       <div className="w-12 h-12 rounded-full bg-red-900/50 flex items-center justify-center">
-        <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -83,7 +91,11 @@ export function TabContainer() {
   return (
     <div className="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden">
       {/* Tab headers */}
-      <div className="flex border-b border-gray-700 bg-gray-900">
+      <div
+        role="tablist"
+        aria-label="분석 결과 탭"
+        className="flex border-b border-gray-700 bg-gray-900"
+      >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.key;
           const count = getBadgeCount(tab);
@@ -92,8 +104,12 @@ export function TabContainer() {
           return (
             <button
               key={tab.key}
+              role="tab"
+              aria-selected={isActive}
+              aria-controls={`tabpanel-${tab.key}`}
+              id={`tab-${tab.key}`}
               onClick={() => handleTabClick(tab.key)}
-              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-3 text-sm font-medium transition-colors border-b-2 ${
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-3 text-sm font-medium transition-colors border-b-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 ${
                 isActive
                   ? 'border-blue-500 text-blue-400 bg-gray-800'
                   : 'border-transparent text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
@@ -115,76 +131,88 @@ export function TabContainer() {
 
       {/* Tab content */}
       <div className="p-4">
-        {activeTab === 'risks' && (
-          <>
-            {results.risks.status === 'idle' && <IdleState />}
-            {results.risks.status === 'processing' && (
-              <LoadingState message="리스크를 분석하고 있습니다..." />
-            )}
-            {results.risks.status === 'error' && (
-              <ErrorState message={results.risks.error ?? '알 수 없는 오류'} />
-            )}
-            {results.risks.status === 'complete' && results.risks.data && (
-              <>
-                <RiskHeatmap risks={results.risks.data} />
-                <RiskSummaryList risks={results.risks.data} />
-              </>
-            )}
-          </>
-        )}
+        <div
+          role="tabpanel"
+          id="tabpanel-risks"
+          aria-labelledby="tab-risks"
+          hidden={activeTab !== 'risks'}
+        >
+          {results.risks.status === 'idle' && <IdleState />}
+          {results.risks.status === 'processing' && (
+            <LoadingState message="리스크를 분석하고 있습니다..." />
+          )}
+          {results.risks.status === 'error' && (
+            <ErrorState message={results.risks.error ?? '알 수 없는 오류'} />
+          )}
+          {results.risks.status === 'complete' && results.risks.data && (
+            <>
+              <RiskHeatmap risks={results.risks.data} />
+              <RiskSummaryList risks={results.risks.data} />
+            </>
+          )}
+        </div>
 
-        {activeTab === 'scenarios' && (
-          <>
-            {results.scenarios.status === 'idle' && <IdleState />}
-            {results.scenarios.status === 'processing' && (
-              <LoadingState message="테스트 시나리오를 생성하고 있습니다..." />
-            )}
-            {results.scenarios.status === 'error' && (
-              <ErrorState message={results.scenarios.error ?? '알 수 없는 오류'} />
-            )}
-            {results.scenarios.status === 'complete' && results.scenarios.data && (
-              <div className="space-y-3">
-                {results.scenarios.data.map((scenario) => (
-                  <ScenarioCard
-                    key={scenario.id}
-                    scenario={scenario}
-                    risks={results.risks.data ?? []}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )}
+        <div
+          role="tabpanel"
+          id="tabpanel-scenarios"
+          aria-labelledby="tab-scenarios"
+          hidden={activeTab !== 'scenarios'}
+        >
+          {results.scenarios.status === 'idle' && <IdleState />}
+          {results.scenarios.status === 'processing' && (
+            <LoadingState message="테스트 시나리오를 생성하고 있습니다..." />
+          )}
+          {results.scenarios.status === 'error' && (
+            <ErrorState message={results.scenarios.error ?? '알 수 없는 오류'} />
+          )}
+          {results.scenarios.status === 'complete' && results.scenarios.data && (
+            <div className="space-y-3">
+              {results.scenarios.data.map((scenario) => (
+                <ScenarioCard
+                  key={scenario.id}
+                  scenario={scenario}
+                  risks={results.risks.data ?? []}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
-        {activeTab === 'cases' && (
-          <>
-            {results.cases.status === 'idle' && <IdleState />}
-            {results.cases.status === 'processing' && (
-              <LoadingState message="테스트 케이스를 작성하고 있습니다..." />
-            )}
-            {results.cases.status === 'error' && (
-              <ErrorState message={results.cases.error ?? '알 수 없는 오류'} />
-            )}
-            {results.cases.status === 'complete' && results.cases.data && (
-              <TestCaseTable cases={results.cases.data} />
-            )}
-          </>
-        )}
+        <div
+          role="tabpanel"
+          id="tabpanel-cases"
+          aria-labelledby="tab-cases"
+          hidden={activeTab !== 'cases'}
+        >
+          {results.cases.status === 'idle' && <IdleState />}
+          {results.cases.status === 'processing' && (
+            <LoadingState message="테스트 케이스를 작성하고 있습니다..." />
+          )}
+          {results.cases.status === 'error' && (
+            <ErrorState message={results.cases.error ?? '알 수 없는 오류'} />
+          )}
+          {results.cases.status === 'complete' && results.cases.data && (
+            <TestCaseTable cases={results.cases.data} />
+          )}
+        </div>
 
-        {activeTab === 'code' && (
-          <>
-            {results.code.status === 'idle' && <IdleState />}
-            {results.code.status === 'processing' && (
-              <LoadingState message="Playwright 자동화 코드를 생성하고 있습니다..." />
-            )}
-            {results.code.status === 'error' && (
-              <ErrorState message={results.code.error ?? '알 수 없는 오류'} />
-            )}
-            {results.code.status === 'complete' && results.code.data && (
-              <PlaywrightCodeTab files={results.code.data} />
-            )}
-          </>
-        )}
+        <div
+          role="tabpanel"
+          id="tabpanel-code"
+          aria-labelledby="tab-code"
+          hidden={activeTab !== 'code'}
+        >
+          {results.code.status === 'idle' && <IdleState />}
+          {results.code.status === 'processing' && (
+            <LoadingState message="Playwright 자동화 코드를 생성하고 있습니다..." />
+          )}
+          {results.code.status === 'error' && (
+            <ErrorState message={results.code.error ?? '알 수 없는 오류'} />
+          )}
+          {results.code.status === 'complete' && results.code.data && (
+            <PlaywrightCodeTab files={results.code.data} />
+          )}
+        </div>
       </div>
     </div>
   );

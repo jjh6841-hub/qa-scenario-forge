@@ -167,3 +167,54 @@ VITE_ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 See `.env.example` for the template.
+
+## Deployment
+
+### GitHub Pages (현재 운영 중)
+
+**URL**: https://jjh6841-hub.github.io/qa-scenario-forge/
+
+자동 배포는 `.github/workflows/deploy.yml`이 담당. `master` 브랜치에 push하면 트리거된다.
+
+```bash
+# 로컬에서 프로덕션 빌드 검증
+npm run build
+npm run preview   # http://localhost:4173 에서 확인
+```
+
+배포 전 필수 확인:
+1. `npm run lint` — 0 errors
+2. `npx tsc --noEmit -p tsconfig.app.json` — 0 errors
+3. `npm run test` — all pass
+4. `npm run build` — 빌드 성공
+
+**환경 변수 설정** (GitHub Pages):
+- Repository → Settings → Secrets and variables → Actions
+- `VITE_ANTHROPIC_API_KEY` 시크릿 추가
+- `deploy.yml`이 빌드 시 자동으로 주입
+
+### Vercel (대안)
+
+`vercel.json`이 포함되어 있어 Vercel에도 즉시 배포 가능:
+
+```bash
+# Vercel CLI 사용
+npm install -g vercel
+vercel --prod
+```
+
+또는 Vercel 대시보드에서 GitHub 레포를 연결하고
+환경 변수 `VITE_ANTHROPIC_API_KEY`를 설정.
+
+### 로컬 프로덕션 환경 테스트
+
+```bash
+npm run build && npm run preview
+# http://localhost:4173 에서 실제 배포와 동일한 환경으로 확인
+```
+
+### 보안 주의사항
+
+`dangerouslyAllowBrowser: true`로 클라이언트에서 직접 API 호출 중.
+실제 프로덕션 서비스라면 API 키를 서버에서 관리하고
+프록시 엔드포인트를 통해 호출하도록 변경 필요.

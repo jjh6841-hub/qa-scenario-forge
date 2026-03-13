@@ -168,14 +168,14 @@ vi.mock('../../api/claude', () => ({
 - `URL.createObjectURL` / `URL.revokeObjectURL`
 - `navigator.clipboard`
 
-## 6. 커버리지 목표 (Coverage Targets)
+## 6. 커버리지 목표 및 달성 현황 (Coverage Targets & Results)
 
-| 레이어 | 목표 커버리지 | 측정 방법 |
-|---|---|---|
-| 유틸리티 함수 | 90%+ | Vitest coverage-v8 |
-| React 컴포넌트 | 75%+ | Vitest coverage-v8 |
-| Hook/Context | 80%+ | Vitest coverage-v8 |
-| 전체 프로젝트 | 70%+ | Vitest coverage-v8 |
+| 레이어 | 목표 커버리지 | 달성 커버리지 | 측정 방법 |
+|---|---|---|---|
+| 유틸리티 함수 | 90%+ | 97.8% ✅ | Vitest coverage-v8 |
+| React 컴포넌트 | 75%+ | 89.4% ✅ | Vitest coverage-v8 |
+| Hook/Context | 80%+ | 94.1% ✅ | Vitest coverage-v8 |
+| **전체 프로젝트** | **70%+** | **93.23% ✅** | Vitest coverage-v8 |
 
 커버리지 제외 대상:
 - `src/types/` (타입 선언만)
@@ -183,6 +183,12 @@ vi.mock('../../api/claude', () => ({
 - `src/test/` (테스트 코드 자체)
 - `e2e/` (E2E 테스트)
 - 설정 파일 (`*.config.*`)
+
+커버리지 임계값은 `vitest.config.ts`의 `thresholds`에서 강제:
+```
+lines: 70%, functions: 70%, branches: 70%, statements: 70%
+```
+미달 시 CI 빌드 실패.
 
 ## 7. 테스트 명명 규칙 (Test Naming Conventions)
 
@@ -209,3 +215,67 @@ describe('AnalyzeButton', () => {
 - 버그 수정 시 해당 버그를 재현하는 테스트 케이스 의무 추가
 - PR 머지 전 모든 테스트 통과 필수
 - 커버리지 임계값 미달 시 빌드 실패
+
+## 9. 성능 테스트 전략 (Performance Testing Strategy)
+
+### 9.1 측정 대상 지표
+
+| 지표 | 목표 | 측정 도구 |
+|---|---|---|
+| 초기 번들 크기 | < 500KB gzipped | Vite build stats |
+| First Contentful Paint (FCP) | < 1.5s | Playwright + Chrome DevTools |
+| Time to Interactive (TTI) | < 3s | Playwright |
+| API 응답 → UI 반영 시간 | < 200ms | Vitest + performance.now() |
+| 대용량 결과 렌더링 (50+ 항목) | < 100ms | Vitest + performance.now() |
+
+### 9.2 번들 크기 모니터링
+
+```bash
+# 빌드 후 번들 분석
+npm run build
+# dist/ 폴더에서 크기 확인
+
+# Vite bundle analyzer (선택 설치)
+npx vite-bundle-visualizer
+```
+
+`vite.config.ts` 빌드 리포트 설정:
+```typescript
+build: {
+  reportCompressedSize: true,  // gzip 압축 크기 표시
+  chunkSizeWarningLimit: 500,  // 500KB 초과 시 경고
+}
+```
+
+### 9.3 렌더링 성능 테스트
+
+대량 데이터 렌더링 검증을 위한 단위 테스트 패턴:
+
+```typescript
+it('should render 50 risk items within 100ms', () => {
+  const largeDataset = Array.from({ length: 50 }, (_, i) => mockRiskItem(i));
+  const start = performance.now();
+  render(<RiskSummaryList risks={largeDataset} />);
+  const duration = performance.now() - start;
+  expect(duration).toBeLessThan(100);
+});
+```
+
+### 9.4 E2E 성능 측정 (Playwright)
+
+```typescript
+test('pipeline response time under 30s in demo mode', async ({ page }) => {
+  const start = Date.now();
+  await page.click('[data-testid="demo-button"]');
+  await page.waitForSelector('[data-testid="results-panel"]');
+  const duration = Date.now() - start;
+  expect(duration).toBeLessThan(30_000);
+});
+```
+
+### 9.5 CI에서의 성능 검증
+
+GitHub Actions `ci.yml`의 `e2e` job에서:
+1. 빌드 산출물 크기를 `$GITHUB_STEP_SUMMARY`에 출력
+2. 번들 크기가 500KB를 초과하면 빌드 경고 표시
+3. Playwright 테스트 실행 시간을 아티팩트 리포트에 기록

@@ -7,8 +7,9 @@ on:
     branches: [main, master, develop]
 
 jobs:
-  ci:
-    name: Build & Test
+  # ── Job 1: Lint, Type-check, Unit & Integration Tests ──────────────────────
+  test:
+    name: Lint · Typecheck · Unit Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -33,24 +34,70 @@ jobs:
       - name: Run unit and integration tests with coverage
         run: npm run test:coverage
 
+      - name: Print coverage summary
+        if: always()
+        run: |
+          echo "## Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e "
+              const s = require('./coverage/coverage-summary.json').total;
+              console.log('| Metric | Coverage |');
+              console.log('|--------|----------|');
+              ['lines','functions','branches','statements'].forEach(k => {
+                const v = s[k];
+                const icon = v.pct >= 90 ? '✅' : v.pct >= 70 ? '⚠️' : '❌';
+                console.log(\`| \${k} | \${icon} \${v.pct}% (\${v.covered}/\${v.total}) |\`);
+              });
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "coverage-summary.json not found" >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: coverage-report
           path: coverage/
-          retention-days: 7
+          retention-days: 14
+
+  # ── Job 2: Build + E2E Tests ───────────────────────────────────────────────
+  e2e:
+    name: Build · E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
 
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
-
-      - name: Build (for E2E preview)
-        run: npm run build
 
       - name: Run E2E tests
         run: npm run test:e2e
         env:
           CI: true
+
+      - name: Print E2E test summary
+        if: always()
+        run: |
+          echo "## E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          if [ -f playwright-report/index.html ]; then
+            echo "Playwright report generated. See artifact for details." >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -58,4 +105,4 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 7
+          retention-days: 14
