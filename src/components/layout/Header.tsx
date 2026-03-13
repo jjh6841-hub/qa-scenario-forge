@@ -40,7 +40,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-900/60 text-blue-200 border border-blue-700/60 backdrop-blur-sm shadow-sm shadow-blue-900/30">
+          <span className="cursor-default select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-900/60 text-blue-200 border border-blue-700/60 backdrop-blur-sm shadow-sm shadow-blue-900/30">
             <svg
               className="w-3 h-3 text-blue-400"
               fill="currentColor"
@@ -55,7 +55,7 @@ export function Header() {
             </svg>
             의료 EMR 도메인 특화
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-900/60 text-green-200 border border-green-700/60 backdrop-blur-sm shadow-sm shadow-green-900/30">
+          <span className="cursor-default select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-green-900/60 text-green-200 border border-green-700/60 backdrop-blur-sm shadow-sm shadow-green-900/30">
             <svg
               className="w-3 h-3 text-green-400"
               fill="currentColor"
@@ -70,7 +70,7 @@ export function Header() {
             </svg>
             심평원 · 의료법 · 개인정보보호법
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-900/60 text-purple-200 border border-purple-700/60 backdrop-blur-sm shadow-sm shadow-purple-900/30">
+          <span className="cursor-default select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-900/60 text-purple-200 border border-purple-700/60 backdrop-blur-sm shadow-sm shadow-purple-900/30">
             <svg
               className="w-3 h-3 text-purple-400"
               fill="currentColor"

@@ -1,8 +1,12 @@
+import { useAppContext } from '../../context/AppContext';
+import type { ActiveTab } from '../../types';
+
 interface FeatureCard {
   icon: string;
   iconBg: string;
   title: string;
   description: string;
+  tab: ActiveTab;
 }
 
 const featureCards: FeatureCard[] = [
@@ -11,28 +15,39 @@ const featureCards: FeatureCard[] = [
     iconBg: 'bg-red-900/60 border border-red-700/50',
     title: '리스크 분석',
     description: 'AI가 잠재적 위험 요소를 식별하고 5×5 히트맵으로 시각화',
+    tab: 'risks',
   },
   {
     icon: '📋',
     iconBg: 'bg-blue-900/60 border border-blue-700/50',
     title: '시나리오 생성',
     description: '리스크 기반 테스트 시나리오를 자동 생성',
+    tab: 'scenarios',
   },
   {
     icon: '✅',
     iconBg: 'bg-green-900/60 border border-green-700/50',
     title: '테스트 케이스',
     description: '단계별 상세 테스트 케이스와 우선순위 자동 산출',
+    tab: 'cases',
   },
   {
     icon: '🤖',
     iconBg: 'bg-purple-900/60 border border-purple-700/50',
     title: 'Playwright 코드',
     description: '실행 가능한 E2E 자동화 코드 즉시 생성',
+    tab: 'code',
   },
 ];
 
 export function EmptyState() {
+  const { dispatch } = useAppContext();
+
+  const handleCardClick = (tab: ActiveTab) => {
+    dispatch({ type: 'LOAD_DEMO' });
+    dispatch({ type: 'SET_ACTIVE_TAB', payload: tab });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-12 px-6">
       {/* Main title area */}
@@ -67,12 +82,13 @@ export function EmptyState() {
         </p>
       </div>
 
-      {/* Feature cards 2x2 grid */}
-      <div className="grid grid-cols-2 gap-4 w-full max-w-xl mb-8">
+      {/* Feature cards 2x2 grid — clickable, loads demo */}
+      <div className="grid grid-cols-2 gap-4 w-full max-w-xl mb-4">
         {featureCards.map((card) => (
-          <div
+          <button
             key={card.title}
-            className="feature-card card-hover bg-gray-800/50 border border-gray-700 rounded-xl p-4 flex flex-col gap-3"
+            onClick={() => handleCardClick(card.tab)}
+            className="feature-card card-hover text-left bg-gray-800/50 border border-gray-700 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-500 transition-colors cursor-pointer"
           >
             <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl text-xl ${card.iconBg}`}>
               {card.icon}
@@ -81,9 +97,13 @@ export function EmptyState() {
               <h3 className="text-gray-100 font-semibold text-sm mb-1">{card.title}</h3>
               <p className="text-gray-400 text-xs leading-relaxed">{card.description}</p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
+
+      <p className="text-gray-600 text-xs mb-8">
+        ↑ 카드를 클릭하면 데모 결과를 바로 확인합니다
+      </p>
 
       {/* Demo hint */}
       <div className="flex items-center gap-2 text-center">
