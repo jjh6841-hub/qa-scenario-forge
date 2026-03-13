@@ -50,9 +50,9 @@ describe('Export flow', () => {
     mockAnchor.click = clickSpy;
 
     const originalCreateElement = document.createElement.bind(document);
-    vi.spyOn(document, 'createElement').mockImplementation((tag: string, ...args: any[]) => {
+    vi.spyOn(document, 'createElement').mockImplementation((tag: string, options?: ElementCreationOptions) => {
       if (tag === 'a') return mockAnchor;
-      return originalCreateElement(tag, ...args);
+      return originalCreateElement(tag as keyof HTMLElementTagNameMap, options);
     });
 
     render(

@@ -7,7 +7,6 @@ test.describe('오류 처리 E2E 테스트', () => {
 
     // The warning should appear when VITE_ANTHROPIC_API_KEY is not set
     // In CI/test environment, this env var won't be set
-    const apiWarning = page.locator('text=API 키 미설정');
     // This may or may not appear depending on env setup
     // Just verify the page loads without crashing
     await expect(page.locator('text=QA Scenario Forge')).toBeVisible();

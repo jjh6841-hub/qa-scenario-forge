@@ -7,7 +7,7 @@ const client = new Anthropic({
   dangerouslyAllowBrowser: true,
 });
 
-const MODEL = 'claude-opus-4-5';
+const MODEL = 'claude-opus-4-6';
 const MAX_TOKENS = 4096;
 
 function extractJSON(text: string): string {
