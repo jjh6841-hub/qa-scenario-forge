@@ -12,7 +12,7 @@ describe('AnalyzeButton', () => {
         onAnalyze={onAnalyze}
       />
     );
-    expect(screen.getByText('QA 시나리오 분석 시작')).toBeInTheDocument();
+    expect(screen.getByText('✨ QA 시나리오 분석 시작')).toBeInTheDocument();
   });
 
   it('should be disabled when specText is empty', () => {

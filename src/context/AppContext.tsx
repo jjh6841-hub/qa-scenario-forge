@@ -4,6 +4,12 @@ import type {
   AppAction,
   AnalysisResults,
 } from '../types';
+import {
+  mockRisks,
+  mockScenarios,
+  mockCases,
+  mockPlaywrightFiles,
+} from '../test/mocks/apiFixtures';
 
 const initialStageState = {
   status: 'idle' as const,
@@ -123,6 +129,19 @@ function appReducer(state: AppState, action: AppAction): AppState {
 
     case 'RESET':
       return initialState;
+
+    case 'LOAD_DEMO':
+      return {
+        ...state,
+        isAnalyzing: false,
+        activeTab: 'risks',
+        results: {
+          risks: { status: 'complete', data: mockRisks, error: null },
+          scenarios: { status: 'complete', data: mockScenarios, error: null },
+          cases: { status: 'complete', data: mockCases, error: null },
+          code: { status: 'complete', data: mockPlaywrightFiles, error: null },
+        },
+      };
 
     default:
       return state;

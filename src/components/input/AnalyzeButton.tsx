@@ -13,7 +13,11 @@ export function AnalyzeButton({ specText, isAnalyzing, onAnalyze }: AnalyzeButto
     <button
       onClick={onAnalyze}
       disabled={isDisabled}
-      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-150 bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+      className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-150 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
+        isDisabled
+          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 opacity-50 cursor-not-allowed'
+          : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 hover:shadow-lg hover:shadow-blue-500/25'
+      } ${isAnalyzing ? 'animate-pulse' : ''}`}
     >
       {isAnalyzing ? (
         <>
@@ -36,7 +40,7 @@ export function AnalyzeButton({ specText, isAnalyzing, onAnalyze }: AnalyzeButto
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
             />
           </svg>
-          <span>QA 시나리오 분석 시작</span>
+          <span>✨ QA 시나리오 분석 시작</span>
         </>
       )}
     </button>

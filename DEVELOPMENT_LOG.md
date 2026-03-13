@@ -123,6 +123,48 @@
 
 ---
 
+---
+
+## Session 4: UI 개선 및 데모 모드 추가
+**날짜**: 2026-03-13
+**작업자**: 개발팀
+
+### 완료된 작업
+
+#### 데모 모드 (LOAD_DEMO)
+- `src/types/index.ts`: `AppAction` 유니온 타입에 `{ type: 'LOAD_DEMO' }` 추가
+- `src/context/AppContext.tsx`: `LOAD_DEMO` 리듀서 케이스 추가 — `mockRisks`, `mockScenarios`, `mockCases`, `mockPlaywrightFiles`를 가져와 4개 스테이지를 `'complete'` 상태로 즉시 설정. `isAnalyzing: false`, `activeTab: 'risks'` 함께 설정.
+
+#### 입력 패널 개선
+- `src/components/input/InputPanel.tsx`: API 키 없이도 결과를 미리 확인하는 "⚡ 데모 실행 (API 키 불필요)" 버튼 추가. 인디고→퍼플 그라디언트, 분석 중이거나 결과가 이미 있을 때는 숨김 처리.
+
+#### 헤더 전면 재설계
+- `src/components/layout/Header.tsx`: 다크 그라디언트 배경, 쉴드 아이콘에 블루/인디고/퍼플 그라디언트 글로우 추가, 타이틀 그라디언트 텍스트 적용, 하단 미세 경계선(`border-gray-800`), 배지 스타일 개선 및 "Claude AI 기반" 배지 추가.
+
+#### EmptyState 컴포넌트 신규 생성
+- `src/components/results/EmptyState.tsx`: 분석 결과 없을 때 표시되는 인상적인 시작 화면. 2×2 피처 카드 그리드(리스크 분석, 시나리오 생성, 테스트 케이스, Playwright 코드), 데모 힌트 텍스트 포함.
+
+#### 결과 패널 업데이트
+- `src/components/results/ResultsPanel.tsx`: 모든 스테이지 `idle` + 분석 중 아닐 때 `EmptyState` 렌더링, 그 외 `TabContainer` 및 기존 결과 UI 렌더링.
+
+#### AnalyzeButton 개선
+- `src/components/input/AnalyzeButton.tsx`: 블루→인디고 그라디언트 배경, 호버 시 섀도우 글로우(`hover:shadow-blue-500/25`), 분석 중 펄스 애니메이션, 텍스트에 ✨ 이모지 추가.
+
+#### CSS 유틸리티 추가
+- `src/index.css`: `.gradient-border`, `.glow-blue`, `.card-hover`, `.feature-card` 커스텀 클래스 추가.
+
+#### PresetSelector 개선
+- `src/components/input/PresetSelector.tsx`: 각 프리셋에 이모지 아이콘(💊 처방, 🔐 로그인, 📋 진료기록), 활성 상태에 그라디언트 배경 및 화살표 인디케이터 추가.
+
+#### ExportBar 개선
+- `src/components/results/ExportBar.tsx`: JSON 버튼 블루 그라디언트, Markdown 버튼 그린 그라디언트로 더 눈에 띄는 스타일링.
+
+### 기술적 결정 사항
+- 데모 모드는 `test/mocks/apiFixtures.ts`의 실제 목 데이터를 사용하여 프로덕션 코드와 테스트 목 데이터를 재사용
+- `EmptyState`는 판정단이 처음 보는 화면이므로 시각적 임팩트에 집중
+
+---
+
 ## 파일 생성 요약
 
 | 카테고리 | 파일 수 |

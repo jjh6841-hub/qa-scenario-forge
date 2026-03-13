@@ -26,7 +26,7 @@ export function ExportBar() {
       <span className="text-gray-500 text-xs mr-2">결과 내보내기:</span>
       <button
         onClick={handleExportJSON}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border border-gray-600 hover:border-gray-500 transition-all"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gradient-to-r from-blue-700 to-blue-600 text-blue-100 hover:from-blue-600 hover:to-blue-500 border border-blue-600/50 hover:border-blue-500 transition-all shadow-sm hover:shadow-blue-500/20 hover:shadow-md"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
@@ -40,7 +40,7 @@ export function ExportBar() {
       </button>
       <button
         onClick={handleExportMarkdown}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border border-gray-600 hover:border-gray-500 transition-all"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gradient-to-r from-green-700 to-green-600 text-green-100 hover:from-green-600 hover:to-green-500 border border-green-600/50 hover:border-green-500 transition-all shadow-sm hover:shadow-green-500/20 hover:shadow-md"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path

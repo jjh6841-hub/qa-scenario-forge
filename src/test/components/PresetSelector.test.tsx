@@ -31,7 +31,7 @@ describe('PresetSelector', () => {
     // The textarea in SpecTextArea would show the content
     // Here we verify the button becomes visually active
     const button = screen.getByText(firstPreset.label).closest('button');
-    expect(button).toHaveClass('bg-blue-900');
+    expect(button).toHaveClass('border-blue-500');
   });
 
   it('should highlight the active preset', () => {
@@ -41,13 +41,13 @@ describe('PresetSelector', () => {
 
     fireEvent.click(screen.getByText(firstPreset.label));
     const firstButton = screen.getByText(firstPreset.label).closest('button');
-    expect(firstButton).toHaveClass('bg-blue-900');
+    expect(firstButton).toHaveClass('border-blue-500');
 
     fireEvent.click(screen.getByText(secondPreset.label));
     const secondButton = screen.getByText(secondPreset.label).closest('button');
-    expect(secondButton).toHaveClass('bg-blue-900');
+    expect(secondButton).toHaveClass('border-blue-500');
     // First button should no longer be active
-    expect(firstButton).not.toHaveClass('bg-blue-900');
+    expect(firstButton).not.toHaveClass('border-blue-500');
   });
 
   it('should render 3 preset buttons', () => {

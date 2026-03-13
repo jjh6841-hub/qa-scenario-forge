@@ -73,7 +73,8 @@ export type AppAction =
   | { type: 'STAGE_COMPLETE_CODE'; payload: PlaywrightFile[] }
   | { type: 'STAGE_ERROR'; payload: { stage: keyof AnalysisResults; error: string } }
   | { type: 'SET_ACTIVE_TAB'; payload: ActiveTab }
-  | { type: 'RESET' };
+  | { type: 'RESET' }
+  | { type: 'LOAD_DEMO' };
 
 export interface Preset {
   id: string;
