@@ -1,5 +1,11 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { prompts } from '../data/prompts';
 import type { RiskItem, TestScenario, TestCase, PlaywrightFile } from '../types';
+
+const client = new Anthropic({
+  apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 const MODEL = 'claude-haiku-4-5-20251001';
 const MAX_TOKENS = 8192;
@@ -33,33 +39,19 @@ function extractJSON(text: string): string {
 }
 
 async function callClaude(systemPrompt: string, userMessage: string): Promise<string> {
-  const response = await fetch('/api/claude', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }],
-    }),
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: MAX_TOKENS,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userMessage }],
   });
 
-  if (!response.ok) {
-    const error = await response.json() as { error?: string };
-    throw new Error(error.error ?? `서버 오류: HTTP ${response.status}`);
-  }
-
-  const data = await response.json() as {
-    content: Array<{ type: string; text: string }>;
-    stop_reason: string;
-  };
-
-  const content = data.content[0];
+  const content = response.content[0];
   if (content.type !== 'text') {
     throw new Error('예상치 못한 응답 형식입니다.');
   }
 
-  if (data.stop_reason === 'max_tokens') {
+  if (response.stop_reason === 'max_tokens') {
     throw new Error('응답이 너무 길어 잘렸습니다. 명세서를 더 간결하게 작성해주세요.');
   }
 
@@ -93,6 +85,7 @@ export async function generateCases(
   scenarios: TestScenario[],
   risks: RiskItem[]
 ): Promise<TestCase[]> {
+  // Pass only the top scenarios to keep token count manageable
   const topScenarios = scenarios.slice(0, 6);
   const topRisks = risks.slice(0, 8);
 

@@ -153,7 +153,7 @@ vi.mock('../../api/claude', () => ({
 
 1. **Tailwind CSS v4**: This project uses Tailwind CSS v4 which has a different config approach than v3. The `tailwind.config.js` and `postcss.config.js` follow the v4 pattern.
 
-2. **API Proxy**: API 호출은 `src/api/claude.ts`의 fetch → `/api/claude` 서버 엔드포인트를 통해 처리됨. `dangerouslyAllowBrowser` 없이 안전하게 운영 가능.
+2. **dangerouslyAllowBrowser**: The Anthropic SDK is initialized with `dangerouslyAllowBrowser: true` for this browser-based demo. In production, API calls should be proxied through a backend server to protect the API key.
 
 3. **Large LLM responses**: Claude may occasionally return responses that exceed the JSON structure. The `extractJSON` helper in `claude.ts` handles this by finding the first `{` to last `}` characters.
 
@@ -163,23 +163,10 @@ vi.mock('../../api/claude', () => ({
 
 Create a `.env` file in the project root:
 ```
-ANTHROPIC_API_KEY=sk-ant-...
+VITE_ANTHROPIC_API_KEY=sk-ant-...
 ```
-
-`VITE_` 접두사 없이 설정 — API 키가 브라우저에 노출되지 않음. 서버(Vite 미들웨어 또는 Vercel 함수)에서만 사용됨.
 
 See `.env.example` for the template.
-
-## Architecture: API Proxy Pattern
-
-```
-[Browser] → fetch('/api/claude') → [Server] → Anthropic API
-```
-
-- **개발 환경**: `vite.config.ts`의 `localApiPlugin`이 `/api/claude` 엔드포인트를 Vite 미들웨어로 처리
-- **프로덕션(Vercel)**: `api/claude.ts` 서버리스 함수가 처리
-
-이 구조 덕분에 `dangerouslyAllowBrowser: true` 없이 API 키를 안전하게 서버에서만 관리.
 
 ## Deployment
 
