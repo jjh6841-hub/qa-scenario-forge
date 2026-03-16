@@ -4,7 +4,8 @@
 ---
 
 ## Session 1: 프로젝트 설정 및 스캐폴딩
-**날짜**: 2026-03-13 09:00–10:30 KST
+**날짜**: 2026-03-13 15:02 KST
+**커밋**: [`b16a65b`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/b16a65b) Initial commit: QA Scenario Forge - AI-powered EMR QA tool
 **작업자**: 개발팀
 
 ### 완료된 작업
@@ -32,7 +33,12 @@
 ---
 
 ## Session 2: 문서화 및 테스트 인프라 구축
-**날짜**: 2026-03-13 10:30–13:00 KST
+**날짜**: 2026-03-13 15:08–15:16 KST
+**커밋**:
+- [`54e3a3e`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/54e3a3e) Fix lint errors, update model to claude-opus-4-6, polish
+- [`8ef4b26`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/8ef4b26) Add E2E tests passing, update CI pipeline
+- [`8b226fe`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/8b226fe) Add GitHub Pages deployment workflow
+- [`cf062f2`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/cf062f2) Update DEVELOPMENT_LOG with final completion status
 **작업자**: 개발팀
 
 ### 완료된 작업
@@ -95,7 +101,11 @@
 ---
 
 ## Session 3: 품질 개선 및 배포
-**날짜**: 2026-03-13 13:00–15:30 KST
+**날짜**: 2026-03-13 15:16–15:45 KST
+**커밋**:
+- [`c9c0260`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/c9c0260) UI polish, demo mode, model update to haiku-4-5
+- [`9ef8bce`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/9ef8bce) Fix UX: badges non-interactive, feature cards fully clickable
+- [`74d5204`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/74d5204) Fix scenario error: MAX_TOKENS 8192, robust JSON extractor, reduce output size for Haiku
 **작업자**: 개발팀
 
 ### 완료된 작업
@@ -126,7 +136,9 @@
 ---
 
 ## Session 4: UI 개선 및 데모 모드 추가
-**날짜**: 2026-03-13 15:30–17:30 KST
+**날짜**: 2026-03-13 15:45–15:54 KST
+**커밋**:
+- [`3d02b7b`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/3d02b7b) Apply Pretendard variable font via CDN
 **작업자**: 개발팀
 
 ### 완료된 작업
@@ -168,7 +180,10 @@
 ---
 
 ## Session 5: 평가 피드백 반영 및 보완
-**날짜**: 2026-03-13 18:00–19:30 KST
+**날짜**: 2026-03-13 16:45–17:36 KST
+**커밋**:
+- [`2d84a89`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/2d84a89) 보완: 에러바운더리, 접근성(WAI-ARIA), 모바일 반응형, CI/CD 개선, 문서 강화
+- [`e7c2406`](https://github.com/jjh6841-hub/qa-scenario-forge/commit/e7c2406) E2E 테스트 완전 자동화: 데모 모드 기반으로 API 키 없이 CI 실행 가능
 **작업자**: 개발팀
 
 ### 완료된 작업
