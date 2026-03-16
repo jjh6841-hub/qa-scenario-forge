@@ -60,16 +60,6 @@ export function InputPanel() {
         onAnalyze={runAnalysis}
       />
 
-      {!import.meta.env.VITE_ANTHROPIC_API_KEY && (
-        <div className="mt-3 p-3 bg-yellow-900/30 border border-yellow-700/50 rounded-lg">
-          <p className="text-yellow-400 text-xs">
-            <span className="font-medium">API 키 미설정:</span>{' '}
-            <code className="bg-yellow-900/50 px-1 rounded">.env</code> 파일에{' '}
-            <code className="bg-yellow-900/50 px-1 rounded">VITE_ANTHROPIC_API_KEY</code>를
-            설정하세요.
-          </p>
-        </div>
-      )}
     </div>
   );
 }
