@@ -39,6 +39,14 @@ export function Header() {
           </div>
         </div>
 
+        {/* GC메디아이 로고 */}
+        <div className="flex items-center gap-1.5 select-none" aria-label="GC메디아이">
+          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-[#009A44]">
+            <span className="text-white text-xs font-black tracking-tighter leading-none">GC</span>
+          </div>
+          <span className="text-sm font-semibold tracking-tight" style={{ color: '#009A44' }}>메디아이</span>
+        </div>
+
         <div className="flex items-center gap-2">
           <span className="hidden md:inline-flex cursor-default select-none items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-blue-900/60 text-blue-200 border border-blue-700/60 backdrop-blur-sm shadow-sm shadow-blue-900/30">
             <svg

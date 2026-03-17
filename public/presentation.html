@@ -265,11 +265,39 @@
     .dot { width: 6px; height: 6px; border-radius: 50%; background: #334155; cursor: pointer; transition: all .2s; }
     .dot.on { background: #3b82f6; width: 16px; border-radius: 3px; }
     #hint { position: fixed; bottom: 26px; right: 36px; font-size: 11px; color: #334155; }
+
+    /* ── GC메디아이 logo watermark (every slide) ── */
+    #gc-logo {
+      position: absolute;
+      top: 24px; right: 28px;
+      display: flex; align-items: center; gap: 7px;
+      z-index: 50; pointer-events: none; user-select: none;
+    }
+    #gc-logo .gc-box {
+      width: 28px; height: 28px;
+      background: #009A44; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #gc-logo .gc-text {
+      font-size: 12px; font-weight: 900;
+      color: #fff; letter-spacing: -0.5px; line-height: 1;
+    }
+    #gc-logo .gc-name {
+      font-size: 14px; font-weight: 600;
+      color: #009A44; letter-spacing: -0.3px;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    }
+    /* S1·S8 배경이 어두운 그라디언트라 동일하게 잘 보임, 중간 슬라이드도 동일 */
   </style>
 </head>
 <body>
 
 <div id="stage">
+  <!-- GC메디아이 logo — fixed inside stage, visible on every slide -->
+  <div id="gc-logo">
+    <div class="gc-box"><span class="gc-text">GC</span></div>
+    <span class="gc-name">메디아이</span>
+  </div>
 
   <!-- S1 ── TITLE -->
   <div class="slide s1 active center" data-i="0">
