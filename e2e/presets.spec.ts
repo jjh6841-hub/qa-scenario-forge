@@ -22,7 +22,7 @@ test.describe('프리셋 선택 E2E 테스트', () => {
   test('프리셋 클릭 시 해당 버튼이 활성 상태가 된다', async ({ page }) => {
     const presetButton = page.locator('button', { hasText: '의사 로그인 및 인증' });
     await presetButton.click();
-    await expect(presetButton).toHaveClass(/bg-blue-900/);
+    await expect(presetButton).toHaveClass(/border-blue-500/);
   });
 
   test('다른 프리셋 클릭 시 이전 프리셋의 활성 상태가 해제된다', async ({ page }) => {
@@ -30,10 +30,10 @@ test.describe('프리셋 선택 E2E 테스트', () => {
     const secondPreset = page.locator('button', { hasText: '의사 로그인 및 인증' });
 
     await firstPreset.click();
-    await expect(firstPreset).toHaveClass(/bg-blue-900/);
+    await expect(firstPreset).toHaveClass(/border-blue-500/);
 
     await secondPreset.click();
-    await expect(secondPreset).toHaveClass(/bg-blue-900/);
-    await expect(firstPreset).not.toHaveClass(/bg-blue-900/);
+    await expect(secondPreset).toHaveClass(/border-blue-500/);
+    await expect(firstPreset).not.toHaveClass(/border-blue-500/);
   });
 });
