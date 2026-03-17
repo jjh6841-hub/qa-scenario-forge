@@ -9,12 +9,7 @@ const client = new Anthropic({
 
 const MODEL = 'claude-haiku-4-5-20251001';
 
-const MAX_TOKENS = {
-  analyzeRisk: 4096,       // 리스크 8개 × 상세 설명 고려
-  generateScenarios: 3072, // 시나리오 6개 × 사전조건/설명
-  generateCases: 4096,     // 케이스 + 단계 포함
-  generateCode: 6144,      // TypeScript 코드는 길어짐
-} as const;
+const MAX_TOKENS = 8192;
 
 function extractJSON(text: string): string {
   // Find outermost { } pair
@@ -44,10 +39,10 @@ function extractJSON(text: string): string {
   throw new Error('JSON이 완전하지 않습니다. 응답이 잘렸을 수 있습니다.');
 }
 
-async function callClaude(systemPrompt: string, userMessage: string, maxTokens: number): Promise<string> {
+async function callClaude(systemPrompt: string, userMessage: string): Promise<string> {
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: maxTokens,
+    max_tokens: MAX_TOKENS,
     system: systemPrompt,
     messages: [{ role: 'user', content: userMessage }],
   });
@@ -66,7 +61,7 @@ async function callClaude(systemPrompt: string, userMessage: string, maxTokens: 
 
 export async function analyzeRisk(specText: string): Promise<RiskItem[]> {
   const userMessage = `다음 의료 EMR 기능 명세서를 분석하여 리스크를 식별해주세요:\n\n${specText}`;
-  const rawResponse = await callClaude(prompts.analyzeRisk, userMessage, MAX_TOKENS.analyzeRisk);
+  const rawResponse = await callClaude(prompts.analyzeRisk, userMessage);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { risks: RiskItem[] };
   return parsed.risks;
@@ -81,7 +76,7 @@ export async function generateScenarios(
 ## 식별된 리스크
 ${JSON.stringify(risks, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateScenarios, userMessage, MAX_TOKENS.generateScenarios);
+  const rawResponse = await callClaude(prompts.generateScenarios, userMessage);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { scenarios: TestScenario[] };
   return parsed.scenarios;
@@ -103,7 +98,7 @@ ${JSON.stringify(topScenarios, null, 2)}
 ## 관련 리스크 (참고)
 ${JSON.stringify(topRisks, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateCases, userMessage, MAX_TOKENS.generateCases);
+  const rawResponse = await callClaude(prompts.generateCases, userMessage);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { cases: TestCase[] };
   return parsed.cases;
@@ -124,7 +119,7 @@ ${JSON.stringify(automatableCases, null, 2)}
 ## 테스트 시나리오 (참고)
 ${JSON.stringify(topScenarios, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateCode, userMessage, MAX_TOKENS.generateCode);
+  const rawResponse = await callClaude(prompts.generateCode, userMessage);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { files: PlaywrightFile[] };
   return parsed.files;
