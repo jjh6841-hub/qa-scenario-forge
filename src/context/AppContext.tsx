@@ -53,6 +53,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
             status: 'processing',
             data: null,
             error: null,
+            streamingText: '',
           },
         },
       };
@@ -106,6 +107,18 @@ function appReducer(state: AppState, action: AppAction): AppState {
             status: 'complete',
             data: action.payload,
             error: null,
+          },
+        },
+      };
+
+    case 'STAGE_STREAM_CHUNK':
+      return {
+        ...state,
+        results: {
+          ...state.results,
+          [action.payload.stage]: {
+            ...state.results[action.payload.stage],
+            streamingText: (state.results[action.payload.stage].streamingText ?? '') + action.payload.chunk,
           },
         },
       };

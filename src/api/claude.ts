@@ -39,7 +39,40 @@ function extractJSON(text: string): string {
   throw new Error('JSON이 완전하지 않습니다. 응답이 잘렸을 수 있습니다.');
 }
 
-async function callClaude(systemPrompt: string, userMessage: string): Promise<string> {
+async function callClaude(
+  systemPrompt: string,
+  userMessage: string,
+  onChunk?: (text: string) => void
+): Promise<string> {
+  if (onChunk) {
+    const stream = client.messages.stream({
+      model: MODEL,
+      max_tokens: MAX_TOKENS,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userMessage }],
+    });
+
+    for await (const event of stream) {
+      if (
+        event.type === 'content_block_delta' &&
+        event.delta.type === 'text_delta'
+      ) {
+        onChunk(event.delta.text);
+      }
+    }
+
+    const finalMessage = await stream.finalMessage();
+    if (finalMessage.stop_reason === 'max_tokens') {
+      throw new Error('응답이 너무 길어 잘렸습니다. 명세서를 더 간결하게 작성해주세요.');
+    }
+
+    const content = finalMessage.content[0];
+    if (content.type !== 'text') {
+      throw new Error('예상치 못한 응답 형식입니다.');
+    }
+    return content.text;
+  }
+
   const response = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
@@ -59,9 +92,12 @@ async function callClaude(systemPrompt: string, userMessage: string): Promise<st
   return content.text;
 }
 
-export async function analyzeRisk(specText: string): Promise<RiskItem[]> {
+export async function analyzeRisk(
+  specText: string,
+  onChunk?: (text: string) => void
+): Promise<RiskItem[]> {
   const userMessage = `다음 의료 EMR 기능 명세서를 분석하여 리스크를 식별해주세요:\n\n${specText}`;
-  const rawResponse = await callClaude(prompts.analyzeRisk, userMessage);
+  const rawResponse = await callClaude(prompts.analyzeRisk, userMessage, onChunk);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { risks: RiskItem[] };
   return parsed.risks;
@@ -69,14 +105,15 @@ export async function analyzeRisk(specText: string): Promise<RiskItem[]> {
 
 export async function generateScenarios(
   _specText: string,
-  risks: RiskItem[]
+  risks: RiskItem[],
+  onChunk?: (text: string) => void
 ): Promise<TestScenario[]> {
   const userMessage = `식별된 리스크를 기반으로 테스트 시나리오를 생성해주세요.
 
 ## 식별된 리스크
 ${JSON.stringify(risks, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateScenarios, userMessage);
+  const rawResponse = await callClaude(prompts.generateScenarios, userMessage, onChunk);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { scenarios: TestScenario[] };
   return parsed.scenarios;
@@ -84,7 +121,8 @@ ${JSON.stringify(risks, null, 2)}`;
 
 export async function generateCases(
   scenarios: TestScenario[],
-  risks: RiskItem[]
+  risks: RiskItem[],
+  onChunk?: (text: string) => void
 ): Promise<TestCase[]> {
   // Pass only the top scenarios to keep token count manageable
   const topScenarios = scenarios.slice(0, 3);
@@ -98,7 +136,7 @@ ${JSON.stringify(topScenarios, null, 2)}
 ## 관련 리스크 (참고)
 ${JSON.stringify(topRisks, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateCases, userMessage);
+  const rawResponse = await callClaude(prompts.generateCases, userMessage, onChunk);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { cases: TestCase[] };
   return parsed.cases;
@@ -106,7 +144,8 @@ ${JSON.stringify(topRisks, null, 2)}`;
 
 export async function generatePlaywrightCode(
   cases: TestCase[],
-  scenarios: TestScenario[]
+  scenarios: TestScenario[],
+  onChunk?: (text: string) => void
 ): Promise<PlaywrightFile[]> {
   const automatableCases = cases.filter((c) => c.automatable).slice(0, 8);
   const topScenarios = scenarios.slice(0, 4);
@@ -119,7 +158,7 @@ ${JSON.stringify(automatableCases, null, 2)}
 ## 테스트 시나리오 (참고)
 ${JSON.stringify(topScenarios, null, 2)}`;
 
-  const rawResponse = await callClaude(prompts.generateCode, userMessage);
+  const rawResponse = await callClaude(prompts.generateCode, userMessage, onChunk);
   const jsonString = extractJSON(rawResponse);
   const parsed = JSON.parse(jsonString) as { files: PlaywrightFile[] };
   return parsed.files;

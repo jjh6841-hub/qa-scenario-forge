@@ -45,6 +45,7 @@ export interface StageState<T> {
   status: StageStatus;
   data: T | null;
   error: string | null;
+  streamingText?: string;
 }
 
 export interface AnalysisResults {
@@ -73,6 +74,7 @@ export type AppAction =
   | { type: 'STAGE_COMPLETE_CODE'; payload: PlaywrightFile[] }
   | { type: 'STAGE_ERROR'; payload: { stage: keyof AnalysisResults; error: string } }
   | { type: 'SET_ACTIVE_TAB'; payload: ActiveTab }
+  | { type: 'STAGE_STREAM_CHUNK'; payload: { stage: keyof AnalysisResults; chunk: string } }
   | { type: 'RESET' }
   | { type: 'LOAD_DEMO' };
 

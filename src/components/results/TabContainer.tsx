@@ -20,16 +20,26 @@ const TABS: TabConfig[] = [
   { key: 'code', label: '코드', stageKey: 'code' },
 ];
 
-function LoadingState({ message }: { message: string }) {
+function LoadingState({ message, streamingText }: { message: string; streamingText?: string }) {
   return (
     <div
       role="status"
       aria-live="polite"
       aria-label={message}
-      className="flex flex-col items-center justify-center py-16 gap-3"
+      className="flex flex-col items-center py-8 gap-3"
     >
-      <Spinner size="lg" color="text-blue-500" />
-      <p className="text-gray-400 text-sm">{message}</p>
+      <div className="flex items-center gap-2">
+        <Spinner size="sm" color="text-blue-500" />
+        <p className="text-gray-400 text-sm">{message}</p>
+      </div>
+      {streamingText && (
+        <div className="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto">
+          <pre className="text-xs text-gray-400 whitespace-pre-wrap break-words font-mono leading-relaxed">
+            {streamingText}
+            <span className="inline-block w-1.5 h-3.5 bg-blue-400 ml-0.5 animate-pulse" />
+          </pre>
+        </div>
+      )}
     </div>
   );
 }
@@ -139,7 +149,7 @@ export function TabContainer() {
         >
           {results.risks.status === 'idle' && <IdleState />}
           {results.risks.status === 'processing' && (
-            <LoadingState message="리스크를 분석하고 있습니다..." />
+            <LoadingState message="리스크를 분석하고 있습니다..." streamingText={results.risks.streamingText} />
           )}
           {results.risks.status === 'error' && (
             <ErrorState message={results.risks.error ?? '알 수 없는 오류'} />
@@ -160,7 +170,7 @@ export function TabContainer() {
         >
           {results.scenarios.status === 'idle' && <IdleState />}
           {results.scenarios.status === 'processing' && (
-            <LoadingState message="테스트 시나리오를 생성하고 있습니다..." />
+            <LoadingState message="테스트 시나리오를 생성하고 있습니다..." streamingText={results.scenarios.streamingText} />
           )}
           {results.scenarios.status === 'error' && (
             <ErrorState message={results.scenarios.error ?? '알 수 없는 오류'} />
@@ -186,7 +196,7 @@ export function TabContainer() {
         >
           {results.cases.status === 'idle' && <IdleState />}
           {results.cases.status === 'processing' && (
-            <LoadingState message="테스트 케이스를 작성하고 있습니다..." />
+            <LoadingState message="테스트 케이스를 작성하고 있습니다..." streamingText={results.cases.streamingText} />
           )}
           {results.cases.status === 'error' && (
             <ErrorState message={results.cases.error ?? '알 수 없는 오류'} />
@@ -204,7 +214,7 @@ export function TabContainer() {
         >
           {results.code.status === 'idle' && <IdleState />}
           {results.code.status === 'processing' && (
-            <LoadingState message="Playwright 자동화 코드를 생성하고 있습니다..." />
+            <LoadingState message="Playwright 자동화 코드를 생성하고 있습니다..." streamingText={results.code.streamingText} />
           )}
           {results.code.status === 'error' && (
             <ErrorState message={results.code.error ?? '알 수 없는 오류'} />

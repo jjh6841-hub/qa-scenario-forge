@@ -16,11 +16,14 @@ export function useAnalysisPipeline() {
 
     dispatch({ type: 'START_ANALYSIS' });
 
+    const makeChunkHandler = (stage: 'risks' | 'scenarios' | 'cases' | 'code') =>
+      (chunk: string) => dispatch({ type: 'STAGE_STREAM_CHUNK', payload: { stage, chunk } });
+
     // Stage 1: Risk Analysis
     dispatch({ type: 'STAGE_START', payload: 'risks' });
     let risks: RiskItem[] = [];
     try {
-      risks = await analyzeRisk(state.specText);
+      risks = await analyzeRisk(state.specText, makeChunkHandler('risks'));
       dispatch({ type: 'STAGE_COMPLETE_RISKS', payload: risks });
       dispatch({ type: 'SET_ACTIVE_TAB', payload: 'risks' });
     } catch (err) {
@@ -36,7 +39,7 @@ export function useAnalysisPipeline() {
     dispatch({ type: 'STAGE_START', payload: 'scenarios' });
     let scenarios: TestScenario[] = [];
     try {
-      scenarios = await generateScenarios(state.specText, risks);
+      scenarios = await generateScenarios(state.specText, risks, makeChunkHandler('scenarios'));
       dispatch({ type: 'STAGE_COMPLETE_SCENARIOS', payload: scenarios });
       dispatch({ type: 'SET_ACTIVE_TAB', payload: 'scenarios' });
     } catch (err) {
@@ -52,14 +55,14 @@ export function useAnalysisPipeline() {
     // Stage 3: Test Case Generation
     dispatch({ type: 'STAGE_START', payload: 'cases' });
     try {
-      const cases = await generateCases(scenarios, risks);
+      const cases = await generateCases(scenarios, risks, makeChunkHandler('cases'));
       dispatch({ type: 'STAGE_COMPLETE_CASES', payload: cases });
       dispatch({ type: 'SET_ACTIVE_TAB', payload: 'cases' });
 
       // Stage 4: Playwright Code Generation
       dispatch({ type: 'STAGE_START', payload: 'code' });
       try {
-        const files = await generatePlaywrightCode(cases, scenarios);
+        const files = await generatePlaywrightCode(cases, scenarios, makeChunkHandler('code'));
         dispatch({ type: 'STAGE_COMPLETE_CODE', payload: files });
         dispatch({ type: 'SET_ACTIVE_TAB', payload: 'code' });
       } catch (err) {
