@@ -86,8 +86,8 @@ export async function generateCases(
   risks: RiskItem[]
 ): Promise<TestCase[]> {
   // Pass only the top scenarios to keep token count manageable
-  const topScenarios = scenarios.slice(0, 6);
-  const topRisks = risks.slice(0, 8);
+  const topScenarios = scenarios.slice(0, 3);
+  const topRisks = risks.slice(0, 4);
 
   const userMessage = `다음 테스트 시나리오를 기반으로 상세한 테스트 케이스를 작성해주세요.
 
