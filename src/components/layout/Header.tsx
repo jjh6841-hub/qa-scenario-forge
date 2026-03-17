@@ -42,7 +42,7 @@ export function Header() {
         {/* GC메디아이 로고 */}
         <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
           {/* 십자 아이콘: 이미지 왼쪽 크롭 */}
-          <div className="overflow-hidden shrink-0" style={{ width: 28, height: 28 }}>
+          <div className="overflow-hidden shrink-0" style={{ width: 20, height: 28, mixBlendMode: 'screen' }}>
             <img
               src={`${import.meta.env.BASE_URL}gc-logo.png`}
               alt=""
