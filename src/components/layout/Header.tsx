@@ -40,11 +40,23 @@ export function Header() {
         </div>
 
         {/* GC메디아이 로고 */}
-        <div className="flex items-center gap-1.5 select-none" aria-label="GC메디아이">
-          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-[#009A44]">
-            <span className="text-white text-xs font-black tracking-tighter leading-none">GC</span>
+        <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
+          {/* 십자 아이콘 — 원본 로고의 레드→오렌지→그린 그라디언트 크로스 */}
+          <svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true">
+            <defs>
+              <linearGradient id="gc-cross-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#ef4444" />
+                <stop offset="48%" stopColor="#f97316" />
+                <stop offset="100%" stopColor="#22c55e" />
+              </linearGradient>
+            </defs>
+            <rect x="10" y="0" width="10" height="30" rx="5" fill="url(#gc-cross-grad)" />
+            <rect x="0" y="10" width="30" height="10" rx="5" fill="url(#gc-cross-grad)" />
+          </svg>
+          <div className="flex items-baseline gap-0.5">
+            <span className="text-base font-black tracking-tight text-white leading-none">GC</span>
+            <span className="text-sm font-medium tracking-tight text-gray-300 leading-none">메디아이</span>
           </div>
-          <span className="text-sm font-semibold tracking-tight" style={{ color: '#009A44' }}>메디아이</span>
         </div>
 
         <div className="flex items-center gap-2">

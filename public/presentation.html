@@ -269,25 +269,21 @@
     /* ── GC메디아이 logo watermark (every slide) ── */
     #gc-logo {
       position: absolute;
-      top: 24px; right: 28px;
-      display: flex; align-items: center; gap: 7px;
+      top: 22px; right: 26px;
+      display: flex; align-items: center; gap: 8px;
       z-index: 50; pointer-events: none; user-select: none;
     }
-    #gc-logo .gc-box {
-      width: 28px; height: 28px;
-      background: #009A44; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
+    #gc-logo .gc-wordmark {
+      display: flex; align-items: baseline; gap: 3px;
     }
-    #gc-logo .gc-text {
-      font-size: 12px; font-weight: 900;
+    #gc-logo .gc-bold {
+      font-size: 15px; font-weight: 900;
       color: #fff; letter-spacing: -0.5px; line-height: 1;
     }
     #gc-logo .gc-name {
-      font-size: 14px; font-weight: 600;
-      color: #009A44; letter-spacing: -0.3px;
-      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: #cbd5e1; letter-spacing: -0.3px; line-height: 1;
     }
-    /* S1·S8 배경이 어두운 그라디언트라 동일하게 잘 보임, 중간 슬라이드도 동일 */
   </style>
 </head>
 <body>
@@ -295,8 +291,21 @@
 <div id="stage">
   <!-- GC메디아이 logo — fixed inside stage, visible on every slide -->
   <div id="gc-logo">
-    <div class="gc-box"><span class="gc-text">GC</span></div>
-    <span class="gc-name">메디아이</span>
+    <svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true">
+      <defs>
+        <linearGradient id="gc-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ef4444"/>
+          <stop offset="48%" stop-color="#f97316"/>
+          <stop offset="100%" stop-color="#22c55e"/>
+        </linearGradient>
+      </defs>
+      <rect x="10" y="0" width="10" height="30" rx="5" fill="url(#gc-g)"/>
+      <rect x="0" y="10" width="30" height="10" rx="5" fill="url(#gc-g)"/>
+    </svg>
+    <div class="gc-wordmark">
+      <span class="gc-bold">GC</span>
+      <span class="gc-name">메디아이</span>
+    </div>
   </div>
 
   <!-- S1 ── TITLE -->
