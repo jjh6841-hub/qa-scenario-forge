@@ -20,26 +20,139 @@ const TABS: TabConfig[] = [
   { key: 'code', label: '코드', stageKey: 'code' },
 ];
 
-function LoadingState({ message, streamingText }: { message: string; streamingText?: string }) {
+function SkeletonLine({ w = 'w-full', h = 'h-3' }: { w?: string; h?: string }) {
+  return <div className={`${w} ${h} bg-gray-700 rounded animate-pulse`} />;
+}
+
+function RiskSkeleton({ streamingText }: { streamingText?: string }) {
+  const found = streamingText ? (streamingText.match(/"priority"\s*:/g) ?? []).length : 0;
+  const rows = Math.max(4, found + 1);
+  const priorities = ['critical', 'high', 'medium', 'low'];
+  const priorityColors: Record<string, string> = {
+    critical: 'bg-red-900/60 border-red-700',
+    high: 'bg-orange-900/60 border-orange-700',
+    medium: 'bg-yellow-900/60 border-yellow-700',
+    low: 'bg-blue-900/60 border-blue-700',
+  };
+
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-label={message}
-      className="flex flex-col items-center py-8 gap-3"
-    >
-      <div className="flex items-center gap-2">
-        <Spinner size="sm" color="text-blue-500" />
-        <p className="text-gray-400 text-sm">{message}</p>
-      </div>
-      {streamingText && (
-        <div className="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 max-h-48 overflow-y-auto">
-          <pre className="text-xs text-gray-400 whitespace-pre-wrap break-words font-mono leading-relaxed">
-            {streamingText}
-            <span className="inline-block w-1.5 h-3.5 bg-blue-400 ml-0.5 animate-pulse" />
-          </pre>
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => {
+        const p = priorities[i % 4];
+        return (
+          <div key={i} className={`rounded-lg border p-4 ${priorityColors[p]}`}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-16 h-5 bg-gray-600 rounded-full animate-pulse" />
+              <SkeletonLine w="w-48" h="h-4" />
+            </div>
+            <SkeletonLine w="w-full" />
+            <div className="mt-1.5">
+              <SkeletonLine w="w-3/4" />
+            </div>
+            <div className="flex gap-4 mt-3">
+              <SkeletonLine w="w-20" h="h-3" />
+              <SkeletonLine w="w-20" h="h-3" />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ScenarioSkeleton({ streamingText }: { streamingText?: string }) {
+  const found = streamingText ? (streamingText.match(/"type"\s*:/g) ?? []).length : 0;
+  const rows = Math.max(3, found + 1);
+  const typeColors = ['bg-purple-900/40 border-purple-700', 'bg-green-900/40 border-green-700', 'bg-blue-900/40 border-blue-700'];
+
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className={`rounded-lg border p-4 ${typeColors[i % 3]}`}>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-14 h-5 bg-gray-600 rounded-full animate-pulse" />
+              <SkeletonLine w="w-40" h="h-4" />
+            </div>
+            <div className="w-20 h-5 bg-gray-700 rounded-full animate-pulse" />
+          </div>
+          <SkeletonLine w="w-full" />
+          <div className="mt-1.5">
+            <SkeletonLine w="w-5/6" />
+          </div>
+          <div className="mt-3 space-y-1.5">
+            <SkeletonLine w="w-3/4" h="h-2.5" />
+            <SkeletonLine w="w-2/3" h="h-2.5" />
+          </div>
         </div>
-      )}
+      ))}
+    </div>
+  );
+}
+
+function CasesSkeleton({ streamingText }: { streamingText?: string }) {
+  const found = streamingText ? (streamingText.match(/"automatable"\s*:/g) ?? []).length : 0;
+  const rows = Math.max(4, found + 1);
+
+  return (
+    <div className="rounded-lg border border-gray-700 overflow-hidden">
+      <div className="grid grid-cols-12 bg-gray-800 px-4 py-2 border-b border-gray-700">
+        <div className="col-span-1"><SkeletonLine w="w-8" h="h-3" /></div>
+        <div className="col-span-5"><SkeletonLine w="w-24" h="h-3" /></div>
+        <div className="col-span-2"><SkeletonLine w="w-12" h="h-3" /></div>
+        <div className="col-span-2"><SkeletonLine w="w-14" h="h-3" /></div>
+        <div className="col-span-2"><SkeletonLine w="w-16" h="h-3" /></div>
+      </div>
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="grid grid-cols-12 px-4 py-3 border-b border-gray-800 items-center">
+          <div className="col-span-1"><SkeletonLine w="w-10" h="h-3" /></div>
+          <div className="col-span-5 space-y-1.5">
+            <SkeletonLine w="w-full" h="h-3" />
+            <SkeletonLine w="w-2/3" h="h-2.5" />
+          </div>
+          <div className="col-span-2"><div className="w-8 h-5 bg-gray-700 rounded animate-pulse" /></div>
+          <div className="col-span-2"><div className="w-6 h-5 bg-gray-700 rounded animate-pulse" /></div>
+          <div className="col-span-2"><div className="w-16 h-5 bg-gray-700 rounded animate-pulse" /></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CodeSkeleton({ streamingText }: { streamingText?: string }) {
+  const found = streamingText ? (streamingText.match(/"filename"\s*:/g) ?? []).length : 0;
+  const files = Math.max(1, found + 1);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        {Array.from({ length: files }).map((_, i) => (
+          <div key={i} className="w-40 h-8 bg-gray-700 rounded-t-lg animate-pulse" />
+        ))}
+      </div>
+      <div className="rounded-lg bg-gray-950 border border-gray-700 p-4 space-y-2">
+        {[100, 85, 60, 90, 45, 70, 55, 80, 40, 65, 50, 75].map((w, i) => (
+          <div key={i} className="flex gap-3 items-center">
+            <div className="w-6 h-2.5 bg-gray-800 rounded shrink-0" />
+            <div
+              className="h-2.5 bg-gray-700 rounded animate-pulse"
+              style={{ width: `${w}%`, animationDelay: `${i * 60}ms` }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LoadingHeader({ message, isStreaming }: { message: string; isStreaming: boolean }) {
+  return (
+    <div role="status" aria-live="polite" aria-label={message} className="flex items-center gap-2 mb-4">
+      <Spinner size="sm" color="text-blue-500" />
+      <p className="text-gray-400 text-sm">
+        {message}
+        {isStreaming && <span className="ml-1 text-blue-400 animate-pulse">●</span>}
+      </p>
     </div>
   );
 }
@@ -149,7 +262,10 @@ export function TabContainer() {
         >
           {results.risks.status === 'idle' && <IdleState />}
           {results.risks.status === 'processing' && (
-            <LoadingState message="리스크를 분석하고 있습니다..." streamingText={results.risks.streamingText} />
+            <>
+              <LoadingHeader message="리스크를 분석하고 있습니다..." isStreaming={!!results.risks.streamingText} />
+              <RiskSkeleton streamingText={results.risks.streamingText} />
+            </>
           )}
           {results.risks.status === 'error' && (
             <ErrorState message={results.risks.error ?? '알 수 없는 오류'} />
@@ -170,7 +286,10 @@ export function TabContainer() {
         >
           {results.scenarios.status === 'idle' && <IdleState />}
           {results.scenarios.status === 'processing' && (
-            <LoadingState message="테스트 시나리오를 생성하고 있습니다..." streamingText={results.scenarios.streamingText} />
+            <>
+              <LoadingHeader message="테스트 시나리오를 생성하고 있습니다..." isStreaming={!!results.scenarios.streamingText} />
+              <ScenarioSkeleton streamingText={results.scenarios.streamingText} />
+            </>
           )}
           {results.scenarios.status === 'error' && (
             <ErrorState message={results.scenarios.error ?? '알 수 없는 오류'} />
@@ -196,7 +315,10 @@ export function TabContainer() {
         >
           {results.cases.status === 'idle' && <IdleState />}
           {results.cases.status === 'processing' && (
-            <LoadingState message="테스트 케이스를 작성하고 있습니다..." streamingText={results.cases.streamingText} />
+            <>
+              <LoadingHeader message="테스트 케이스를 작성하고 있습니다..." isStreaming={!!results.cases.streamingText} />
+              <CasesSkeleton streamingText={results.cases.streamingText} />
+            </>
           )}
           {results.cases.status === 'error' && (
             <ErrorState message={results.cases.error ?? '알 수 없는 오류'} />
@@ -214,7 +336,10 @@ export function TabContainer() {
         >
           {results.code.status === 'idle' && <IdleState />}
           {results.code.status === 'processing' && (
-            <LoadingState message="Playwright 자동화 코드를 생성하고 있습니다..." streamingText={results.code.streamingText} />
+            <>
+              <LoadingHeader message="Playwright 자동화 코드를 생성하고 있습니다..." isStreaming={!!results.code.streamingText} />
+              <CodeSkeleton streamingText={results.code.streamingText} />
+            </>
           )}
           {results.code.status === 'error' && (
             <ErrorState message={results.code.error ?? '알 수 없는 오류'} />
