@@ -40,7 +40,7 @@ export function Header() {
         </div>
 
         {/* GC메디아이 로고 */}
-        <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
+        <div className="flex items-center gap-1 select-none" aria-label="GC메디아이">
           {/* 십자 아이콘만 크롭 */}
           <div className="overflow-hidden shrink-0" style={{ width: 26, height: 28 }}>
             <img
