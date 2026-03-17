@@ -10,7 +10,6 @@
       background: #070d1a;
       overflow: hidden;
       width: 100vw; height: 100vh;
-      display: flex; align-items: center; justify-content: center;
       font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
     }
 
@@ -18,7 +17,8 @@
     #stage {
       width: 1280px;
       height: 720px;
-      position: relative;
+      position: fixed;
+      top: 0; left: 0;
       transform-origin: top left;
       overflow: hidden;
     }
@@ -477,15 +477,15 @@
   const nextBtn= document.getElementById('next');
   let cur = 0;
 
-  /* ── Scale stage to fit viewport ── */
+  /* ── Scale stage to fit viewport (position: fixed, no layout interference) ── */
   function resize() {
     const sw = 1280, sh = 720;
     const scale = Math.min(window.innerWidth / sw, window.innerHeight / sh);
-    const ml = (window.innerWidth  - sw * scale) / 2;
-    const mt = (window.innerHeight - sh * scale) / 2;
+    const left = (window.innerWidth  - sw * scale) / 2;
+    const top  = (window.innerHeight - sh * scale) / 2;
     stage.style.transform = `scale(${scale})`;
-    stage.style.marginLeft = ml + 'px';
-    stage.style.marginTop  = mt + 'px';
+    stage.style.left = left + 'px';
+    stage.style.top  = top  + 'px';
   }
   resize();
   window.addEventListener('resize', resize);
