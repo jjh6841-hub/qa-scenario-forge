@@ -270,30 +270,10 @@
     #gc-logo {
       position: absolute;
       top: 22px; right: 26px;
-      display: flex; align-items: center; gap: 8px;
       z-index: 50; pointer-events: none; user-select: none;
     }
-    #gc-logo .gc-wordmark {
-      display: flex; align-items: baseline; gap: 3px;
-    }
-    #gc-logo .gc-cross {
-      overflow: hidden; flex-shrink: 0;
-      width: 20px; height: 24px;
-      background: #0f172a;
-    }
-    #gc-logo .gc-cross img {
-      height: 24px; width: auto; max-width: none;
-    }
-    #gc-logo .gc-wordmark {
-      display: flex; align-items: baseline; gap: 3px;
-    }
-    #gc-logo .gc-bold {
-      font-size: 15px; font-weight: 900;
-      color: #fff; letter-spacing: -0.5px; line-height: 1;
-    }
-    #gc-logo .gc-name {
-      font-size: 13px; font-weight: 500;
-      color: #cbd5e1; letter-spacing: -0.3px; line-height: 1;
+    #gc-logo img {
+      height: 24px; width: auto;
     }
   </style>
 </head>
@@ -302,11 +282,7 @@
 <div id="stage">
   <!-- GC메디아이 logo — fixed inside stage, visible on every slide -->
   <div id="gc-logo">
-    <div class="gc-cross"><img src="./gc-logo.png" alt=""></div>
-    <div class="gc-wordmark">
-      <span class="gc-bold">GC</span>
-      <span class="gc-name">메디아이</span>
-    </div>
+    <img src="./gc-logo.png" alt="GC메디아이">
   </div>
 
   <!-- S1 ── TITLE -->
