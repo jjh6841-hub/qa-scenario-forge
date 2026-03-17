@@ -276,13 +276,8 @@
     #gc-logo .gc-wordmark {
       display: flex; align-items: baseline; gap: 3px;
     }
-    #gc-logo .gc-bold {
-      font-size: 15px; font-weight: 900;
-      color: #fff; letter-spacing: -0.5px; line-height: 1;
-    }
-    #gc-logo .gc-name {
-      font-size: 13px; font-weight: 500;
-      color: #cbd5e1; letter-spacing: -0.3px; line-height: 1;
+    #gc-logo img {
+      height: 22px; width: auto;
     }
   </style>
 </head>
@@ -291,33 +286,8 @@
 <div id="stage">
   <!-- GC메디아이 logo — fixed inside stage, visible on every slide -->
   <div id="gc-logo">
-    <svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true">
-      <defs>
-        <radialGradient id="pgr" cx="45%" cy="28%" r="70%">
-          <stop offset="0%" stop-color="#f5324e"/>
-          <stop offset="100%" stop-color="#bf0018"/>
-        </radialGradient>
-        <radialGradient id="pgg" cx="65%" cy="45%" r="70%">
-          <stop offset="0%" stop-color="#2ec87a"/>
-          <stop offset="100%" stop-color="#007838"/>
-        </radialGradient>
-        <radialGradient id="pgl" cx="50%" cy="65%" r="70%">
-          <stop offset="0%" stop-color="#aadc4e"/>
-          <stop offset="100%" stop-color="#67a11e"/>
-        </radialGradient>
-        <radialGradient id="pgo" cx="33%" cy="50%" r="70%">
-          <stop offset="0%" stop-color="#fdc040"/>
-          <stop offset="100%" stop-color="#e07f06"/>
-        </radialGradient>
-      </defs>
-      <ellipse cx="20" cy="10" rx="7.5" ry="12" fill="url(#pgr)"/>
-      <ellipse cx="20" cy="30" rx="7.5" ry="12" fill="url(#pgl)"/>
-      <ellipse cx="10" cy="20" rx="12" ry="7.5" fill="url(#pgo)"/>
-      <ellipse cx="30" cy="20" rx="12" ry="7.5" fill="url(#pgg)"/>
-    </svg>
-    <div class="gc-wordmark">
-      <span class="gc-bold">GC</span>
-      <span class="gc-name">메디아이</span>
+    <div style="background:#fff;border-radius:6px;padding:4px 8px;display:flex;align-items:center;">
+      <img src="./gc-logo.png" alt="GC메디아이" style="height:22px;width:auto;">
     </div>
   </div>
 

@@ -40,36 +40,12 @@ export function Header() {
         </div>
 
         {/* GC메디아이 로고 */}
-        <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
-          {/* 십자 아이콘 — 4방향 타원 팔: 위(빨강) 우(초록) 아래(연두) 좌(주황) */}
-          <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
-            <defs>
-              <radialGradient id="hgr" cx="45%" cy="28%" r="70%">
-                <stop offset="0%" stopColor="#f5324e" />
-                <stop offset="100%" stopColor="#bf0018" />
-              </radialGradient>
-              <radialGradient id="hgg" cx="65%" cy="45%" r="70%">
-                <stop offset="0%" stopColor="#2ec87a" />
-                <stop offset="100%" stopColor="#007838" />
-              </radialGradient>
-              <radialGradient id="hgl" cx="50%" cy="65%" r="70%">
-                <stop offset="0%" stopColor="#aadc4e" />
-                <stop offset="100%" stopColor="#67a11e" />
-              </radialGradient>
-              <radialGradient id="hgo" cx="33%" cy="50%" r="70%">
-                <stop offset="0%" stopColor="#fdc040" />
-                <stop offset="100%" stopColor="#e07f06" />
-              </radialGradient>
-            </defs>
-            <ellipse cx="20" cy="10" rx="7.5" ry="12" fill="url(#hgr)" />
-            <ellipse cx="20" cy="30" rx="7.5" ry="12" fill="url(#hgl)" />
-            <ellipse cx="10" cy="20" rx="12" ry="7.5" fill="url(#hgo)" />
-            <ellipse cx="30" cy="20" rx="12" ry="7.5" fill="url(#hgg)" />
-          </svg>
-          <div className="flex items-baseline gap-0.5">
-            <span className="text-base font-black tracking-tight text-white leading-none">GC</span>
-            <span className="text-sm font-medium tracking-tight text-gray-300 leading-none">메디아이</span>
-          </div>
+        <div className="bg-white rounded-lg px-2.5 py-1 select-none" aria-label="GC메디아이">
+          <img
+            src={`${import.meta.env.BASE_URL}gc-logo.png`}
+            alt="GC메디아이"
+            className="h-6 w-auto"
+          />
         </div>
 
         <div className="flex items-center gap-2">
