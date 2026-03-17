@@ -40,12 +40,20 @@ export function Header() {
         </div>
 
         {/* GC메디아이 로고 */}
-        <div className="bg-white rounded-lg px-2.5 py-1 select-none" aria-label="GC메디아이">
-          <img
-            src={`${import.meta.env.BASE_URL}gc-logo.png`}
-            alt="GC메디아이"
-            className="h-6 w-auto"
-          />
+        <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
+          {/* 십자 아이콘: 이미지 왼쪽 크롭 */}
+          <div className="overflow-hidden shrink-0" style={{ width: 28, height: 28 }}>
+            <img
+              src={`${import.meta.env.BASE_URL}gc-logo.png`}
+              alt=""
+              aria-hidden="true"
+              style={{ height: 28, width: 'auto', maxWidth: 'none' }}
+            />
+          </div>
+          <div className="flex items-baseline gap-0.5">
+            <span className="text-base font-black tracking-tight text-white leading-none">GC</span>
+            <span className="text-sm font-medium tracking-tight text-gray-300 leading-none">메디아이</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
