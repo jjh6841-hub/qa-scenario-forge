@@ -70,8 +70,8 @@ export function EmptyState() {
         <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">
           AI가 의료 EMR QA를 자동화합니다
         </h2>
-        <p className="text-gray-400 text-sm max-w-lg mx-auto leading-relaxed">
-          기능 명세서를 입력하면 리스크 분석부터 Playwright 자동화 코드까지 4단계로 즉시 생성합니다
+        <p className="text-gray-400 text-sm mx-auto leading-relaxed">
+          기능 명세서를 입력하면 리스크 분석부터 Playwright 코드까지 4단계로 즉시 생성합니다
         </p>
       </div>
 
