@@ -10,9 +10,9 @@ const client = new Anthropic({
 const MODEL = 'claude-haiku-4-5-20251001';
 
 const MAX_TOKENS = {
-  analyzeRisk: 2048,      // 리스크 JSON은 간결함
-  generateScenarios: 2048, // 시나리오 JSON은 중간 크기
-  generateCases: 4096,     // 케이스 + 단계 포함으로 더 필요
+  analyzeRisk: 4096,       // 리스크 8개 × 상세 설명 고려
+  generateScenarios: 3072, // 시나리오 6개 × 사전조건/설명
+  generateCases: 4096,     // 케이스 + 단계 포함
   generateCode: 6144,      // TypeScript 코드는 길어짐
 } as const;
 
