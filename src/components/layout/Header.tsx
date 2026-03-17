@@ -41,17 +41,30 @@ export function Header() {
 
         {/* GC메디아이 로고 */}
         <div className="flex items-center gap-2 select-none" aria-label="GC메디아이">
-          {/* 십자 아이콘 — 원본 로고의 레드→오렌지→그린 그라디언트 크로스 */}
-          <svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true">
+          {/* 십자 아이콘 — 4방향 타원 팔: 위(빨강) 우(초록) 아래(연두) 좌(주황) */}
+          <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
             <defs>
-              <linearGradient id="gc-cross-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#ef4444" />
-                <stop offset="48%" stopColor="#f97316" />
-                <stop offset="100%" stopColor="#22c55e" />
-              </linearGradient>
+              <radialGradient id="hgr" cx="45%" cy="28%" r="70%">
+                <stop offset="0%" stopColor="#f5324e" />
+                <stop offset="100%" stopColor="#bf0018" />
+              </radialGradient>
+              <radialGradient id="hgg" cx="65%" cy="45%" r="70%">
+                <stop offset="0%" stopColor="#2ec87a" />
+                <stop offset="100%" stopColor="#007838" />
+              </radialGradient>
+              <radialGradient id="hgl" cx="50%" cy="65%" r="70%">
+                <stop offset="0%" stopColor="#aadc4e" />
+                <stop offset="100%" stopColor="#67a11e" />
+              </radialGradient>
+              <radialGradient id="hgo" cx="33%" cy="50%" r="70%">
+                <stop offset="0%" stopColor="#fdc040" />
+                <stop offset="100%" stopColor="#e07f06" />
+              </radialGradient>
             </defs>
-            <rect x="10" y="0" width="10" height="30" rx="5" fill="url(#gc-cross-grad)" />
-            <rect x="0" y="10" width="30" height="10" rx="5" fill="url(#gc-cross-grad)" />
+            <ellipse cx="20" cy="10" rx="7.5" ry="12" fill="url(#hgr)" />
+            <ellipse cx="20" cy="30" rx="7.5" ry="12" fill="url(#hgl)" />
+            <ellipse cx="10" cy="20" rx="12" ry="7.5" fill="url(#hgo)" />
+            <ellipse cx="30" cy="20" rx="12" ry="7.5" fill="url(#hgg)" />
           </svg>
           <div className="flex items-baseline gap-0.5">
             <span className="text-base font-black tracking-tight text-white leading-none">GC</span>

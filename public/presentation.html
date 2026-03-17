@@ -291,16 +291,29 @@
 <div id="stage">
   <!-- GC메디아이 logo — fixed inside stage, visible on every slide -->
   <div id="gc-logo">
-    <svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true">
       <defs>
-        <linearGradient id="gc-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#ef4444"/>
-          <stop offset="48%" stop-color="#f97316"/>
-          <stop offset="100%" stop-color="#22c55e"/>
-        </linearGradient>
+        <radialGradient id="pgr" cx="45%" cy="28%" r="70%">
+          <stop offset="0%" stop-color="#f5324e"/>
+          <stop offset="100%" stop-color="#bf0018"/>
+        </radialGradient>
+        <radialGradient id="pgg" cx="65%" cy="45%" r="70%">
+          <stop offset="0%" stop-color="#2ec87a"/>
+          <stop offset="100%" stop-color="#007838"/>
+        </radialGradient>
+        <radialGradient id="pgl" cx="50%" cy="65%" r="70%">
+          <stop offset="0%" stop-color="#aadc4e"/>
+          <stop offset="100%" stop-color="#67a11e"/>
+        </radialGradient>
+        <radialGradient id="pgo" cx="33%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#fdc040"/>
+          <stop offset="100%" stop-color="#e07f06"/>
+        </radialGradient>
       </defs>
-      <rect x="10" y="0" width="10" height="30" rx="5" fill="url(#gc-g)"/>
-      <rect x="0" y="10" width="30" height="10" rx="5" fill="url(#gc-g)"/>
+      <ellipse cx="20" cy="10" rx="7.5" ry="12" fill="url(#pgr)"/>
+      <ellipse cx="20" cy="30" rx="7.5" ry="12" fill="url(#pgl)"/>
+      <ellipse cx="10" cy="20" rx="12" ry="7.5" fill="url(#pgo)"/>
+      <ellipse cx="30" cy="20" rx="12" ry="7.5" fill="url(#pgg)"/>
     </svg>
     <div class="gc-wordmark">
       <span class="gc-bold">GC</span>
