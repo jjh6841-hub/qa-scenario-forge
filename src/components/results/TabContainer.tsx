@@ -27,35 +27,54 @@ function SkeletonLine({ w = 'w-full', h = 'h-3' }: { w?: string; h?: string }) {
 function RiskSkeleton({ streamingText }: { streamingText?: string }) {
   const found = streamingText ? (streamingText.match(/"priority"\s*:/g) ?? []).length : 0;
   const rows = Math.max(4, found + 1);
-  const priorities = ['critical', 'high', 'medium', 'low'];
-  const priorityColors: Record<string, string> = {
-    critical: 'bg-red-900/60 border-red-700',
-    high: 'bg-orange-900/60 border-orange-700',
-    medium: 'bg-yellow-900/60 border-yellow-700',
-    low: 'bg-blue-900/60 border-blue-700',
-  };
 
   return (
     <div className="space-y-3">
-      {Array.from({ length: rows }).map((_, i) => {
-        const p = priorities[i % 4];
-        return (
-          <div key={i} className={`rounded-lg border p-4 ${priorityColors[p]}`}>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-16 h-5 bg-gray-600 rounded-full animate-pulse" />
-              <SkeletonLine w="w-48" h="h-4" />
+      {/* Heatmap skeleton */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+        <SkeletonLine w="w-24" h="h-4" />
+        <div className="mt-4 grid gap-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)' }}>
+          {Array.from({ length: 25 }).map((_, i) => (
+            <div key={i} className="h-10 rounded bg-gray-700 animate-pulse" style={{ animationDelay: `${i * 20}ms` }} />
+          ))}
+        </div>
+        <div className="mt-3 flex gap-3">
+          {['bg-red-600', 'bg-orange-500', 'bg-yellow-400', 'bg-green-200'].map((c, i) => (
+            <div key={i} className="flex items-center gap-1">
+              <div className={`w-3 h-3 rounded ${c} opacity-50`} />
+              <SkeletonLine w="w-12" h="h-2.5" />
             </div>
-            <SkeletonLine w="w-full" />
-            <div className="mt-1.5">
-              <SkeletonLine w="w-3/4" />
+          ))}
+        </div>
+      </div>
+
+      {/* Risk list skeleton */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+        <SkeletonLine w="w-32" h="h-4" />
+        <div className="mt-3 space-y-2">
+          {Array.from({ length: rows }).map((_, i) => (
+            <div key={i} className="bg-gray-900 border border-gray-700 rounded-lg p-3">
+              <div className="flex items-start justify-between gap-2 mb-1.5">
+                <div className="flex items-center gap-2">
+                  <SkeletonLine w="w-16" h="h-3" />
+                  <div className="w-16 h-5 bg-gray-700 rounded animate-pulse" />
+                  <div className="w-10 h-5 bg-gray-700 rounded animate-pulse" />
+                </div>
+                <div className="flex gap-1.5 shrink-0">
+                  <div className="w-14 h-5 bg-gray-800 rounded animate-pulse" />
+                  <div className="w-16 h-5 bg-gray-800 rounded animate-pulse" />
+                  <div className="w-12 h-5 bg-gray-800 rounded animate-pulse" />
+                </div>
+              </div>
+              <SkeletonLine w="w-2/3" h="h-3.5" />
+              <div className="mt-1.5 space-y-1">
+                <SkeletonLine w="w-full" h="h-2.5" />
+                <SkeletonLine w="w-4/5" h="h-2.5" />
+              </div>
             </div>
-            <div className="flex gap-4 mt-3">
-              <SkeletonLine w="w-20" h="h-3" />
-              <SkeletonLine w="w-20" h="h-3" />
-            </div>
-          </div>
-        );
-      })}
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -63,26 +82,49 @@ function RiskSkeleton({ streamingText }: { streamingText?: string }) {
 function ScenarioSkeleton({ streamingText }: { streamingText?: string }) {
   const found = streamingText ? (streamingText.match(/"type"\s*:/g) ?? []).length : 0;
   const rows = Math.max(3, found + 1);
-  const typeColors = ['bg-purple-900/40 border-purple-700', 'bg-green-900/40 border-green-700', 'bg-blue-900/40 border-blue-700'];
+  const typeBadgeColors = [
+    'bg-blue-900 border-blue-700',
+    'bg-red-900 border-red-700',
+    'bg-purple-900 border-purple-700',
+    'bg-orange-900 border-orange-700',
+    'bg-green-900 border-green-700',
+  ];
 
   return (
     <div className="space-y-3">
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className={`rounded-lg border p-4 ${typeColors[i % 3]}`}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="w-14 h-5 bg-gray-600 rounded-full animate-pulse" />
-              <SkeletonLine w="w-40" h="h-4" />
+        <div key={i} className="bg-gray-900 border border-gray-700 rounded-xl p-4">
+          {/* ID + type badge */}
+          <div className="flex items-center gap-2 mb-2">
+            <SkeletonLine w="w-16" h="h-3" />
+            <div className={`w-14 h-5 rounded border animate-pulse ${typeBadgeColors[i % 5]}`} />
+          </div>
+          {/* Title */}
+          <SkeletonLine w="w-3/5" h="h-4" />
+          {/* Description */}
+          <div className="mt-2 space-y-1.5">
+            <SkeletonLine w="w-full" h="h-2.5" />
+            <SkeletonLine w="w-11/12" h="h-2.5" />
+          </div>
+          {/* 사전 조건 */}
+          <div className="mt-3">
+            <SkeletonLine w="w-14" h="h-2.5" />
+            <div className="mt-1.5 space-y-1.5">
+              {[0, 1].map((j) => (
+                <div key={j} className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500/50 shrink-0" />
+                  <SkeletonLine w={j === 0 ? 'w-3/4' : 'w-2/3'} h="h-2.5" />
+                </div>
+              ))}
             </div>
-            <div className="w-20 h-5 bg-gray-700 rounded-full animate-pulse" />
           </div>
-          <SkeletonLine w="w-full" />
-          <div className="mt-1.5">
-            <SkeletonLine w="w-5/6" />
-          </div>
-          <div className="mt-3 space-y-1.5">
-            <SkeletonLine w="w-3/4" h="h-2.5" />
-            <SkeletonLine w="w-2/3" h="h-2.5" />
+          {/* 관련 리스크 */}
+          <div className="mt-3">
+            <SkeletonLine w="w-16" h="h-2.5" />
+            <div className="mt-1.5 flex gap-1.5">
+              <div className="w-24 h-5 bg-gray-800 border border-gray-600 rounded animate-pulse" />
+              <div className="w-20 h-5 bg-gray-800 border border-gray-600 rounded animate-pulse" />
+            </div>
           </div>
         </div>
       ))}
