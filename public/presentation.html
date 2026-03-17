@@ -223,8 +223,17 @@
       min-width: 300px;
     }
     .lcard .llabel { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
-    .lcard .lurl   { font-size: 14px; color: #60a5fa; font-family: monospace; word-break: break-all; }
+    .lcard .lurl   { font-size: 13px; color: #94a3b8; font-family: monospace; word-break: break-all; }
     .lcard .ldesc  { font-size: 11px; color: #64748b; margin-top: 6px; }
+    .lcard a.btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 14px; padding: 10px 22px;
+      border-radius: 8px; font-size: 13px; font-weight: 700;
+      text-decoration: none; transition: filter .15s; border: none;
+    }
+    .lcard a.btn:hover { filter: brightness(1.15); }
+    .btn-blue   { background: #3b82f6; color: #fff; }
+    .btn-indigo { background: #6366f1; color: #fff; }
     .how {
       background: #1e293b; border: 1px solid #334155;
       border-radius: 16px; padding: 24px 28px;
@@ -438,11 +447,17 @@
           <div class="llabel">🚀 배포 URL</div>
           <div class="lurl">jjh6841-hub.github.io/qa-scenario-forge/</div>
           <div class="ldesc">GitHub Pages — 무료, 즉시 접속 가능</div>
+          <a class="btn btn-blue" href="https://jjh6841-hub.github.io/qa-scenario-forge/" target="_blank" rel="noopener">
+            ↗ 앱 바로 열기
+          </a>
         </div>
         <div class="lcard" style="border-color:#6366f1">
           <div class="llabel">📂 소스 코드</div>
           <div class="lurl">github.com/jjh6841-hub/qa-scenario-forge</div>
           <div class="ldesc">MIT 라이선스 오픈소스</div>
+          <a class="btn btn-indigo" href="https://github.com/jjh6841-hub/qa-scenario-forge" target="_blank" rel="noopener">
+            ↗ GitHub 바로 열기
+          </a>
         </div>
       </div>
       <div class="how">
